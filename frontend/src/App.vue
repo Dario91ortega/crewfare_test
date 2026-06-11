@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import ItemList from './components/ItemList.vue'
+import ItemList from './components/ItemList.vue';
+import OnlineApiDemo from './components/OnlineApiDemo.vue';
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import ItemList from './components/ItemList.vue'
       Laravel en <code>/api/items</code> vía axios.
     </p>
     <ItemList />
+    <OnlineApiDemo />
   </main>
 </template>
 

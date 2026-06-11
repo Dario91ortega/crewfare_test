@@ -22,11 +22,17 @@ async function load(): Promise<void> {
   }
 }
 
-function helloworld(text:string) {
+function helloworld(text:any) {
 
   console.log(text);
 
-  for (let i = 1; i <= [1,2].length; i++) {
+  let array_test = [1,2];
+
+  array_test.forEach(element => {
+    console.log("foreach"+element);
+  });
+
+  for (let i = 1; i <= array_test.length; i++) {
     console.log ('for'+i);    
   }
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ProxyController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 // Endpoint de salud sencillo: GET /api/ping
 Route::get('/ping', fn () => response()->json(['message' => 'pong']));
+
+// Proxy a APIs públicas (evita CORS): GET /api/proxy?url=https://...
+Route::get('/proxy', ProxyController::class);
+
+// Endpoint de prueba genérico: GET /api/test
+Route::get('/test', [TestController::class, 'index']);
+
+// View html
+Route::get('/example', [TestController::class, 'exampleHtml']);
+
 
 // Recurso de ejemplo. apiResource genera:
 //   GET    /api/items        -> index
