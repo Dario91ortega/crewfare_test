@@ -1,13 +1,10 @@
-# Dependencias (se reconstruyen dentro de Docker)
+# Dependencies (rebuilt inside Docker)
 backend/vendor/
 frontend/node_modules/
 frontend/dist/
 
-# Datos locales
+# Local data
 backend/database/database.sqlite
 
-# docs
-docs/
-
-# Nota: los .env SÍ se incluyen a propósito (entorno de prueba listo para
-# compartir). En un proyecto real NO se versionan.
+# Note: the .env files ARE committed on purpose (throwaway test environment,
+# ready to share). In a real project you would NOT version them.
