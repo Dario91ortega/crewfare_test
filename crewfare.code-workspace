@@ -1,4 +1,18 @@
 {
+  // ============================================================================
+  // FUENTE DE VERDAD de la configuración del editor para este proyecto.
+  //
+  // 📌 PISTA CLAVE (para evitar repetir un error pasado):
+  //    El workspace solo incluye las carpetas backend/ y frontend/.
+  //    La RAÍZ crewfare/ NO es carpeta del workspace, así que
+  //    crewfare/.vscode/settings.json NO se carga al abrir este .code-workspace.
+  //    => Cualquier "settings" de editor (postfix, suggest, formatters, etc.)
+  //       debe ir AQUÍ, en este bloque "settings".
+  //
+  //    Los SNIPPETS (.code-snippets) no pueden vivir en este archivo; van en:
+  //       - backend/.vscode/php.code-snippets
+  //       - frontend/.vscode/typescript.code-snippets
+  // ============================================================================
   "folders": [
     { "name": "backend", "path": "backend" },
     { "name": "frontend", "path": "frontend" }
@@ -9,6 +23,60 @@
     "php.validate.enable": true,
     "php.validate.executablePath": "/home/dario-ortega/dev/crewfare/bin/php-docker",
     "php.validate.run": "onSave",
-    "php.suggest.basic": false
+    "php.suggest.basic": false,
+
+    "editor.suggest.completeFunctionCalls": true,
+
+    "postfix.languages": [
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+      "vue"
+    ],
+    "postfix.customTemplates": [
+      {
+        "name": "filter",
+        "description": "Array.filter",
+        "body": "{{expr}}.filter((${1:item}) => ${0})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "map",
+        "description": "Array.map",
+        "body": "{{expr}}.map((${1:item}) => ${0})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "reduce",
+        "description": "Array.reduce",
+        "body": "{{expr}}.reduce((${1:acc}, ${2:item}) => ${0}, ${3:initial})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "find",
+        "description": "Array.find",
+        "body": "{{expr}}.find((${1:item}) => ${0})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "some",
+        "description": "Array.some",
+        "body": "{{expr}}.some((${1:item}) => ${0})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "every",
+        "description": "Array.every",
+        "body": "{{expr}}.every((${1:item}) => ${0})",
+        "when": ["identifier", "expression"]
+      },
+      {
+        "name": "foreach",
+        "description": "Array.forEach con cuerpo",
+        "body": "{{expr}}.forEach((${1:item}) => {\n\t${0}\n})",
+        "when": ["identifier", "expression"]
+      }
+    ]
   }
 }
