@@ -1,0 +1,6 @@
+#!/bin/sh
+# Wrapper para que VS Code valide PHP usando el php del contenedor Docker.
+# El validador integrado (php.validate) llama a este "ejecutable" con sus args
+# (p.ej. -l) y envía el contenido del archivo por stdin; lo reenviamos al
+# contenedor con `docker exec -i` (stdin abierto).
+exec docker exec -i crewfare-backend-1 php "$@"

@@ -1,13 +1,14 @@
 {
   "folders": [
     { "name": "backend", "path": "backend" },
-    { "name": "frontend", "path": "frontend" },
-    { "name": "root", "path": "." }
+    { "name": "frontend", "path": "frontend" }
   ],
   "settings": {
-    "files.exclude": {
-      "backend/**": true,
-      "frontend/**": true
-    }
+    "LaravelExtraIntellisense.phpCommand": "docker exec -i crewfare-backend-1 php -r \"{code}\"",
+    "LaravelExtraIntellisense.basePathForCode": "/var/www/html",
+    "php.validate.enable": true,
+    "php.validate.executablePath": "/home/dario-ortega/dev/crewfare/bin/php-docker",
+    "php.validate.run": "onSave",
+    "php.suggest.basic": false
   }
 }

@@ -1,0 +1,14 @@
+{
+  // Fallback por si abres la carpeta crewfare/ directamente (no el .code-workspace).
+  // Laravel Extra Intellisense ejecuta PHP dentro del contenedor backend.
+  "LaravelExtraIntellisense.phpCommand": "docker exec -i crewfare-backend-1 php -r \"{code}\"",
+  "LaravelExtraIntellisense.basePathForCode": "/var/www/html",
+
+  // Validador PHP integrado usando el php del contenedor (vía wrapper).
+  // Valida al guardar para no lanzar un `docker exec` en cada tecla.
+  "php.validate.enable": true,
+  "php.validate.executablePath": "/home/dario-ortega/dev/crewfare/bin/php-docker",
+  "php.validate.run": "onSave",
+  // Autocompletado básico apagado: lo maneja Intelephense.
+  "php.suggest.basic": false
+}
