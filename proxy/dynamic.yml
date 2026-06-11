@@ -1,0 +1,30 @@
+# Configuración dinámica de Traefik (provider de archivo).
+# Define cómo se enrutan las peticiones a crewfare.localhost.
+http:
+  routers:
+    # /api/* -> backend Laravel. Prioridad alta para ganar al catch-all.
+    backend:
+      rule: "Host(`crewfare.localhost`) && PathPrefix(`/api`)"
+      priority: 10
+      service: backend
+      entryPoints:
+        - web
+
+    # Todo lo demás -> frontend Vue/Vite.
+    frontend:
+      rule: "Host(`crewfare.localhost`)"
+      priority: 1
+      service: frontend
+      entryPoints:
+        - web
+
+  services:
+    backend:
+      loadBalancer:
+        servers:
+          - url: "http://backend:8000"
+
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:5173"

@@ -1,0 +1,72 @@
+# Stack de la entrevista: proxy (Traefik) + db (MySQL) + backend (Laravel) + frontend (Vue).
+# Todo se sirve bajo http://${APP_HOST} (por defecto crewfare.localhost).
+#
+# Arranque:   docker compose up --build
+# Migrar:     docker compose exec backend php artisan migrate --seed
+
+services:
+  # ---------------------------------------------------------------------------
+  # Reverse proxy. Enruta por path bajo un único hostname y descubre los
+  # servicios leyendo las "labels" de cada contenedor.
+  # ---------------------------------------------------------------------------
+  proxy:
+    image: traefik:v3.3
+    # Usamos el provider de ARCHIVO (no el de Docker) para evitar la
+    # incompatibilidad de versión de API con Docker Engine 29. Las rutas se
+    # definen de forma estática en proxy/dynamic.yml.
+    command:
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --providers.file.watch=true
+      - --entryPoints.web.address=:80
+      - --api.insecure=true # dashboard en http://localhost:8080 (solo dev)
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./proxy/dynamic.yml:/etc/traefik/dynamic.yml:ro
+
+  # ---------------------------------------------------------------------------
+  # Base de datos MySQL. Solo accesible dentro de la red de Docker.
+  # ---------------------------------------------------------------------------
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    # Publicamos el 3306 al host para conectarse con DBeaver/clientes externos.
+    # (el CRM ya usa el 3307, así que aquí dejamos el 3306 libre)
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  # ---------------------------------------------------------------------------
+  # API Laravel. Espera a que la DB esté sana antes de arrancar.
+  # ---------------------------------------------------------------------------
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/var/www/html
+      - /var/www/html/vendor # volumen anónimo: conserva el vendor de la imagen
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Frontend Vue + Vite. Captura todo lo que no sea /api.
+  # ---------------------------------------------------------------------------
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # volumen anónimo: no pisar los deps del contenedor
+
+volumes:
+  db_data:
